@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5b4a6d769d271f43be1756164fbb3c6, type: 3}
+  m_Name: Golem
+  m_EditorClassIdentifier: 
+  cardName: "Sorci\xE8re du N\xE9ant"
+  description:
+  - "Gagne 1 mana chaque fois qu\u2019elle attaque."
+  health: 6
+  damage: 6
+  mana: 3
+  descriptionbackground: {fileID: 0}
+  cardImage: {fileID: -5295681649394328682, guid: a15945b5646387a4c8b90129c87a53dc, type: 3}
+  namebackground: {fileID: 0}
