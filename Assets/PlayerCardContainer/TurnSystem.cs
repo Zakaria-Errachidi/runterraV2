@@ -4,11 +4,11 @@ using UnityEngine.UI;
 
 public class TurnSystem : MonoBehaviour
 {
-    public bool IsYourTurn = true; // Commence par le joueur
-    public int TurnNumber = 1; // Numéro du tour
-    public TMP_Text TurnText; // Affichage du tour
-    public TMP_Text ManaText; // Affichage du mana
-    public Button EndTurnButton; // Bouton unique pour finir le tour
+    public bool IsYourTurn = true; 
+    public int TurnNumber = 1;
+    public TMP_Text TurnText;
+    public TMP_Text MancheText; 
+    public Button EndTurnButton;
 
     public int MaxMana = 1;
     public int CurrentMana = 1;
@@ -22,7 +22,7 @@ public class TurnSystem : MonoBehaviour
     void UpdateTurnUI()
     {
         TurnText.text = IsYourTurn ? "Your Turn" : "Opponent Turn";
-        ManaText.text = CurrentMana + "/" + MaxMana;
+        MancheText.text = CurrentMana + "/" + MaxMana;
     }
 
     public void EndTurn()
