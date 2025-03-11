@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "CardDefinition", menuName = "Scriptable Objects/CardDefinition")]
 public class CardDefinition : ScriptableObject
@@ -11,5 +12,6 @@ public class CardDefinition : ScriptableObject
     public Sprite descriptionbackground;
     public Sprite cardImage;
     public Sprite namebackground;
-    
+    public Sprite cardbackground;
+    public bool isChampion;
 }

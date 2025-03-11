@@ -11,7 +11,10 @@ public class Card : MonoBehaviour
     [SerializeField] private TMP_Text Cardname;
     [SerializeField] private Image DescriptionBackground;
     [SerializeField] private Image CardImage;
+    [SerializeField] private Image NameBackground;
+    [SerializeField] private Image CardBackground;
     [SerializeField] private GameObject DescriptionPrefab;
+    [SerializeField] private Sprite defaultCardBackground;
 
 
 
@@ -26,6 +29,10 @@ public class Card : MonoBehaviour
         DescriptionBackground.sprite = cardDefinition.descriptionbackground;
         Cardname.text = cardDefinition.cardName;
         CardImage.sprite = cardDefinition.cardImage;
+
+        CardBackground.sprite = cardDefinition.cardbackground != null ? cardDefinition.cardbackground : defaultCardBackground;
+        DescriptionBackground.sprite = cardDefinition.descriptionbackground;
+        NameBackground.sprite = cardDefinition.namebackground;
 
 
 
