@@ -22,7 +22,7 @@ public class Card : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void initialize(CardDefinition cardDefinition)
     {
-        // Mise � jour des valeurs principales de la carte
+        // Mise à jour des valeurs principales de la carte
         ManaCost.text = cardDefinition.mana.ToString();
         DamageText.text = cardDefinition.damage.ToString();
         HpCard.text = cardDefinition.health.ToString();
@@ -51,4 +51,27 @@ public class Card : MonoBehaviour
             }
         }
     }
+
+    public int GetManaCost()
+    {
+        return int.Parse(ManaCost.text); // Convertit le texte TMP en int
+    }
+    public int GetDamage()
+    {
+        return int.Parse(DamageText.text); // Récupère les dégâts de la carte
+    }
+
+    public int GetHealth()
+    {
+        return int.Parse(HpCard.text); // Récupère les HP de la carte
+    }
+
+    public void TakeDamage(int damage)
+    {
+        int newHealth = Mathf.Max(0, GetHealth() - damage);
+        HpCard.text = newHealth.ToString(); // Met à jour l'affichage des HP
+    }
+
+
+
 }
