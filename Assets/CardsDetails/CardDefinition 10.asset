@@ -19,5 +19,7 @@ MonoBehaviour:
   damage: 4
   mana: 2
   descriptionbackground: {fileID: 0}
-  cardImage: {fileID: 0}
+  cardImage: {fileID: 3003794749881322660, guid: 1db159eb9391094409c4945031154dd4, type: 3}
   namebackground: {fileID: 0}
+  cardbackground: {fileID: 0}
+  isChampion: 0

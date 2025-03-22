@@ -1,9 +1,10 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class ScoreManager : MonoBehaviour
 {
-    [Header("Références UI")]
+    [Header("RÃ©fÃ©rences UI")]
     public TMP_Text[] playerUsernames;
     public TMP_Text[] playerHealthText;
     public TMP_Text[] playerManaText;
@@ -11,12 +12,15 @@ public class ScoreManager : MonoBehaviour
     [Header("Configuration des joueurs")]
     public string[] playerNames = { "Joueur 1", "Joueur 2", "Joueur 3", "Joueur 4" };
     private int[] playerHP = { 20, 20, 20, 20 };
-    private int[] playerMana = { 4, 1, 1, 1 };
+    private int[] playerMana = { 8, 8, 8, 8 };
     private int maxPlayers = 4;
 
-    [Header("Gestion des Canvas")]
-    public GameObject battleBoardCanvas;  // Canvas où se trouve le bouton "Surrender"
-    public GameObject waitingRoomCanvas;  // Canvas où le joueur est redirigé après surrender
+    [Header("UI de Fin de Partie")]
+    public GameObject battleBoardCanvas;
+    public GameObject endGameCanvas;
+    public TMP_Text winnerText;
+    public UnityEngine.UI.Button quitButton;
+
 
     void Start()
     {
@@ -41,18 +45,57 @@ public class ScoreManager : MonoBehaviour
         if (playerIndex >= 0 && playerIndex < maxPlayers)
         {
             playerHP[playerIndex] += amount;
+
+            // Limite les HP Ã  minimum 0
+            playerHP[playerIndex] = Mathf.Max(0, playerHP[playerIndex]);
+
             UpdateScoreUI();
+
+            // VÃ©rifie si le joueur est mort
+            if (playerHP[playerIndex] <= 0)
+            {
+                Debug.Log(playerNames[playerIndex] + " a perdu !");
+                EndGame(playerIndex);
+            }
         }
     }
+
 
     public void ModifyPlayerMana(int playerIndex, int amount)
     {
         if (playerIndex >= 0 && playerIndex < maxPlayers)
         {
-            playerMana[playerIndex] += amount;
+            playerMana  [playerIndex] += amount;
             UpdateScoreUI();
         }
     }
+
+    private void EndGame(int loserIndex)
+    {
+        int winnerIndex = (loserIndex == 0) ? 1 : 0;
+
+        Debug.Log("Partie terminÃ©e ! " + playerNames[winnerIndex] + " gagne !");
+
+        // DÃ©sactive le canvas principal
+        battleBoardCanvas.SetActive(false);
+
+        // Active le canvas de fin
+        endGameCanvas.SetActive(true);
+
+        // Met Ã  jour le texte du gagnant
+        winnerText.text = playerNames[winnerIndex] + " a gagnÃ© la partie !";
+
+        // Ajoute l'action du bouton pour quitter
+        quitButton.onClick.RemoveAllListeners();
+        quitButton.onClick.AddListener(() =>
+        {
+            SceneManager.LoadSceneAsync("Start");
+        });
+    }
+
+
+
+
 
     public void Surrender(int playerIndex)
     {
@@ -62,10 +105,6 @@ public class ScoreManager : MonoBehaviour
             playerHP[playerIndex] = 0;
             playerMana[playerIndex] = 0;
             UpdateScoreUI();
-
-            //Désactiver le BattleBoard et Activer la Waiting Room
-            battleBoardCanvas.SetActive(false);
-            waitingRoomCanvas.SetActive(true);
         }
     }
     public int GetPlayerHP(int index)
@@ -77,17 +116,5 @@ public class ScoreManager : MonoBehaviour
     {
         return (index >= 0 && index < maxPlayers) ? playerMana[index] : 0;
     }
-    public int GetCurrentPlayerIndex()
-    {
-        // Retourne l'index du joueur actif (à adapter si besoin)
-        return 0; // 0 pour Joueur 1, 1 pour Joueur 2...
-    }
-
-    public int GetCurrentPlayerMana()
-    {
-        int playerIndex = GetCurrentPlayerIndex();
-        return playerMana[playerIndex];
-    }
-
 
 }

@@ -1,33 +1,32 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.XR;
 
 public class HandDisplayer : MonoBehaviour
 {
-    public HorizontalLayoutGroup CardLayoutGroup;
-    public Card PrefabCardDisplayer;
+    public HorizontalLayoutGroup CardLayoutGroupJ1;
+    public HorizontalLayoutGroup CardLayoutGroupJ2;
     public HandManager HandManager;
 
     void Start()
     {
-        HandManager.OnCardAdded.AddListener(_ => UpdateDisplayer());
-        UpdateDisplayer();
+        HandManager.OnCardAdded.AddListener(UpdateDisplayer); // 🔥 Écoute les nouvelles cartes
+        UpdateDisplayer(1);
+        UpdateDisplayer(2);
     }
 
-    public void UpdateDisplayer()
+    public void UpdateDisplayer(int playerIndex)
     {
-        
-        // Nettoyer les anciennes cartes
-        foreach (Transform child in CardLayoutGroup.transform)
+        HorizontalLayoutGroup targetContainer = (playerIndex == 1) ? CardLayoutGroupJ1 : CardLayoutGroupJ2;
+
+        foreach (Transform child in targetContainer.transform)
         {
             Destroy(child.gameObject);
         }
-        // Ajouter et positionner les nouvelles cartes
-        foreach (CardDefinition CardDef in HandManager.Hand)
+
+        foreach (CardDefinition CardDef in HandManager.GetHand(playerIndex))
         {
-            Debug.Log("carte ajoute");
-            Card newCard = Instantiate(PrefabCardDisplayer, CardLayoutGroup.transform);
-            newCard.initialize(CardDef);
+            Card newCard = Instantiate(Resources.Load<Card>("CardPrefab"), targetContainer.transform);
+            newCard.Initialize(CardDef);
         }
     }
 }

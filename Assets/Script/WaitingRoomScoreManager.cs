@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-
+/*
 public class WaitingRoomManager : MonoBehaviour
 {
     [Header("Références UI - Waiting Room")]
@@ -35,3 +35,4 @@ public class WaitingRoomManager : MonoBehaviour
         }
     }
 }
+*/

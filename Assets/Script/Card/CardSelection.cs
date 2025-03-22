@@ -1,26 +1,36 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class CardSelection : MonoBehaviour, IPointerClickHandler
 {
-    public static CardSelection SelectedCard { get; private set; } // Stocke la carte sélectionnée
+    public static CardSelection SelectedCard { get; private set; }
+    public static Transform SelectedCardParent { get; private set; } // Stocke le parent de la carte sÃ©lectionnÃ©e
+
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (SelectedCard == this)
         {
             DeselectCard();
-            Debug.Log("Carte désélectionnée.");
         }
         else
         {
+            if (SelectedCard != null)
+            {
+                DeselectCard();
+            }
+
             SelectedCard = this;
-            Debug.Log("Carte sélectionnée : " + gameObject.name);
+            SelectedCardParent = transform.parent; // ðŸ”¥ Stocke le parent de la carte
+
+            Debug.Log($"âœ… Carte sÃ©lectionnÃ©e : {gameObject.name}, Parent : {SelectedCardParent.name}");
         }
     }
 
     public static void DeselectCard()
     {
         SelectedCard = null;
+        SelectedCardParent = null; // ðŸ”¥ RÃ©initialise le parent
     }
+
 }

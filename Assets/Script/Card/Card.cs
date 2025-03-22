@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,31 +15,41 @@ public class Card : MonoBehaviour
     [SerializeField] private Image CardBackground;
     [SerializeField] private GameObject DescriptionPrefab;
     [SerializeField] private Sprite defaultCardBackground;
+    private CardDefinition cardDefinition;
 
+    private int currentHealth;
+    private int playerIndex;
 
-
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    public void initialize(CardDefinition cardDefinition)
+    public void Initialize(CardDefinition cardDefinition)
     {
-        // Mise à jour des valeurs principales de la carte
-        ManaCost.text = cardDefinition.mana.ToString();
-        DamageText.text = cardDefinition.damage.ToString();
-        HpCard.text = cardDefinition.health.ToString();
-        DescriptionBackground.sprite = cardDefinition.descriptionbackground;
-        Cardname.text = cardDefinition.cardName;
-        CardImage.sprite = cardDefinition.cardImage;
-
-        CardBackground.sprite = cardDefinition.cardbackground != null ? cardDefinition.cardbackground : defaultCardBackground;
-        DescriptionBackground.sprite = cardDefinition.descriptionbackground;
-        NameBackground.sprite = cardDefinition.namebackground;
-
-
-
-        // Ajoute dynamiquement chaque ligne de description
-        foreach (string descriptionLine in cardDefinition.description)
+        if (cardDefinition == null)
         {
-            if (DescriptionPrefab != null)
+            Debug.LogError("Erreur : CardDefinition est null lors de l'initialisation !");
+            return;
+        }
+
+        currentHealth = cardDefinition.health;
+
+        if (ManaCost != null) ManaCost.text = cardDefinition.mana.ToString();
+        if (DamageText != null) DamageText.text = cardDefinition.damage.ToString();
+        if (HpCard != null) HpCard.text = currentHealth.ToString();
+        if (Cardname != null) Cardname.text = cardDefinition.cardName;
+        if (CardImage != null) CardImage.sprite = cardDefinition.cardImage;
+
+        if (CardBackground != null)
+            CardBackground.sprite = cardDefinition.cardbackground != null ? cardDefinition.cardbackground : defaultCardBackground;
+        if (DescriptionBackground != null) DescriptionBackground.sprite = cardDefinition.descriptionbackground;
+        if (NameBackground != null) NameBackground.sprite = cardDefinition.namebackground;
+        if (!Application.isPlaying) return;
+
+        if (DescriptionContainer != null && DescriptionPrefab != null)
+        {
+            foreach (Transform child in DescriptionContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (string descriptionLine in cardDefinition.description)
             {
                 GameObject newTextObject = Instantiate(DescriptionPrefab, DescriptionContainer.transform);
                 TMP_Text newText = newTextObject.GetComponentInChildren<TMP_Text>();
@@ -50,28 +60,55 @@ public class Card : MonoBehaviour
                 }
             }
         }
+
+    }
+    public CardDefinition GetCardDefinition()
+    {
+        return cardDefinition;
     }
 
     public int GetManaCost()
     {
-        return int.Parse(ManaCost.text); // Convertit le texte TMP en int
-    }
-    public int GetDamage()
-    {
-        return int.Parse(DamageText.text); // Récupère les dégâts de la carte
+        return int.Parse(ManaCost.text);
     }
 
-    public int GetHealth()
+    public int GetDamage()
     {
-        return int.Parse(HpCard.text); // Récupère les HP de la carte
+        return int.Parse(DamageText.text);
     }
 
     public void TakeDamage(int damage)
     {
-        int newHealth = Mathf.Max(0, GetHealth() - damage);
-        HpCard.text = newHealth.ToString(); // Met à jour l'affichage des HP
+        currentHealth = Mathf.Max(0, currentHealth - damage);
+        if (HpCard != null) HpCard.text = currentHealth.ToString();
     }
 
+    public void SetPlayerIndex(int index)
+    {
+        playerIndex = index;
+    }
 
+    public int GetPlayerIndex()
+    {
+        return playerIndex;
+    }
 
+    public void Attack(Card target)
+    {
+        if (target == null) return;
+        target.TakeDamage(GetDamage());
+    }
+
+    public void Revive()
+    {
+        int reviveHealth = 5;
+        currentHealth = reviveHealth;
+        if (HpCard != null) HpCard.text = reviveHealth.ToString();
+        Debug.Log($"{Cardname.text} a été ressuscitée avec {reviveHealth} HP !");
+    }
+
+    public int GetHealth()
+    {
+        return currentHealth;
+    }
 }

@@ -18,7 +18,7 @@ public class CardDisplayManager : MonoBehaviour
         {
             GameObject newCard = Instantiate(cardPrefab, contentPanel);
             Card newCardScript = newCard.GetComponent<Card>();  // Récupère le script `card`
-            newCardScript.initialize(cardDefinition); // Initialise avec les données
+            newCardScript.Initialize(cardDefinition); // Initialise avec les données
             Debug.Log("Carte ajoutée : " + cardDefinition.cardName);
         }
     }
