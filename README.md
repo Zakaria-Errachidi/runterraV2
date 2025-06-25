@@ -37,5 +37,5 @@ Chaque carte peut avoir un ou plusieurs effets :
 ---
 
 ## Auteur: 
-ERRACHIDI Zakaria
-HAMROUD Youness
+- ERRACHIDI Zakaria
+- HAMROUD Youness
